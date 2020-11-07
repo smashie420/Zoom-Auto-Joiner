@@ -1,0 +1,30 @@
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\Zoom Auto-Join.exe.config
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\Zoom Auto-Join.exe
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\Zoom Auto-Join.pdb
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csprojAssemblyReference.cache
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csproj.CoreCompileInputs.cache
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.exe
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.pdb
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom_Auto_Join.Properties.Resources.resources
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csproj.GenerateResource.cache
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\DiscordRPC.dll
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\Newtonsoft.Json.dll
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\DiscordRPC.pdb
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\DiscordRPC.xml
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\Newtonsoft.Json.xml
+C:\Users\owner\source\repos\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csproj.CopyComplete
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\Zoom Auto-Join.exe.config
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\Zoom Auto-Join.exe
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\Zoom Auto-Join.pdb
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\DiscordRPC.dll
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\Newtonsoft.Json.dll
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\DiscordRPC.pdb
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\DiscordRPC.xml
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\bin\Debug\Newtonsoft.Json.xml
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csprojAssemblyReference.cache
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom_Auto_Join.Properties.Resources.resources
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csproj.GenerateResource.cache
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csproj.CoreCompileInputs.cache
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csproj.CopyComplete
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.exe
+H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.pdb
