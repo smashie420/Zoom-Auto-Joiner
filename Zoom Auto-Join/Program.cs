@@ -17,6 +17,7 @@ namespace Zoom_Auto_Join
                Link = link;
                Time = time;
             }
+            // Test
             public void joinClassOnReady() {
                 
                 Console.WriteLine("Waiting to join class at " + Convert.ToDateTime(this.Time).ToString("hh:mm:ss") + " " + Convert.ToDateTime(this.Time).ToString("tt"));
