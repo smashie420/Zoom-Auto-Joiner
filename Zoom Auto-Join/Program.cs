@@ -128,7 +128,7 @@ namespace Zoom_Auto_Join
         static void Main(string[] args)
         {
             DiscordStatus();
-
+            //TEtetetete
             
             if (!File.Exists("settings.ini"))
             {
