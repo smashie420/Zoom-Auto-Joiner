@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Media;
+using System.Net.Http;
 using System.Threading;
+using DiscordRPC;
+using DiscordRPC.Logging;
+using JNogueira.Discord.Webhook.Client;
+
 
 namespace Zoom_Auto_Join
 {
@@ -28,6 +34,9 @@ namespace Zoom_Auto_Join
                 {
                     if(this.Time == DateTime.Now.ToString("HH:mm:ss"))
                     {
+
+                        
+
                         if (string.IsNullOrEmpty(joinSound))
                         {
                             SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.join);
@@ -51,6 +60,7 @@ namespace Zoom_Auto_Join
             }
             
             
+            
             // Auto-implemented readonly property:
             public string Link { get; }
             public string Time { get; }
@@ -65,9 +75,60 @@ namespace Zoom_Auto_Join
         }
 
 
- 
+        
+
+        // Discord ShiT
+        public static readonly DiscordRpcClient client = new DiscordRpcClient("775260345597034526");
+        public static void DiscordStatus()
+        {
+            Random rnd = new Random();
+
+            int single = rnd.Next(1, 3);
+            string[] imagetextArr = { "Dying", "Im fucking bored", "Lazzy", "Holy fuck im coding this at 3AM", "Epic" };
+            int randomTxtArr = rnd.Next(1, imagetextArr.Length + 1);
+
+
+            
+            client.Initialize();
+
+            client.SetPresence(new RichPresence()
+            {
+                Details = "made by smashguns#6175",
+                //State = "csharp example",
+                Assets = new Assets()
+                {
+                    LargeImageKey = "small" + single,
+                    LargeImageText = imagetextArr[randomTxtArr],
+                    SmallImageKey = "zoom"
+
+                }
+            });
+            client.UpdateStartTime();
+        }
+
+        /*
+        private static readonly HttpClient http = new HttpClient();
+        public static async void SendWebHook(string message)
+        {
+            var values = new Dictionary<string, string>
+                        {
+                            { "username", "Zoom Logs" },
+                            { "content", message },
+                            { "avatar", "https://www.publiccounsel.net/train/wp-content/uploads/sites/13/5e8ce318664eae0004085461.png" },
+                            { "embeds", "" }
+                        };
+            
+            var content = new FormUrlEncodedContent(values);
+            var response = await http.PostAsync("https://discordapp.com/api/webhooks/775279806773985292/XqzTnS5Ako0fRdeXkiAa18CgOwtliRCrHGwqNX-O5LYesg4rCak26PsAa7soHSdwaKWe", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+        }*/
+
+
         static void Main(string[] args)
         {
+            DiscordStatus();
+            
+
             if (!File.Exists("settings.ini"))
             {
                 var MyIni = new IniFile("settings.ini");
@@ -182,6 +243,8 @@ namespace Zoom_Auto_Join
                 }
                 Console.WriteLine("Seems like classess ended");
             }
+            client.UpdateEndTime();
+            client.Dispose();
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
         }

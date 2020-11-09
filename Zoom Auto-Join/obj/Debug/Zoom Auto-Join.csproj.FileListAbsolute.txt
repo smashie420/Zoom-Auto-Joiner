@@ -28,3 +28,18 @@ H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.c
 H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csproj.CopyComplete
 H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.exe
 H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.pdb
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Debug\Zoom Auto-Join.exe.config
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Debug\Zoom Auto-Join.exe
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Debug\Zoom Auto-Join.pdb
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Debug\DiscordRPC.dll
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Debug\Newtonsoft.Json.dll
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Debug\DiscordRPC.pdb
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Debug\DiscordRPC.xml
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Debug\Newtonsoft.Json.xml
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csprojAssemblyReference.cache
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Debug\Zoom_Auto_Join.Properties.Resources.resources
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csproj.GenerateResource.cache
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csproj.CoreCompileInputs.cache
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.csproj.CopyComplete
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.exe
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Debug\Zoom Auto-Join.pdb
