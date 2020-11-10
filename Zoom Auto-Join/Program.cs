@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Media;
-using System.Net.Http;
 using System.Threading;
 using DiscordRPC;
-using DiscordRPC.Logging;
 
 // USE THIS
 using JNogueira.Discord.Webhook.Client;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Zoom_Auto_Join
 {
@@ -158,31 +157,8 @@ namespace Zoom_Auto_Join
                     )
                 }
                 );
-
-            // Send the message!
             await client.SendToDiscord(message);
         }
-        
-
-        /*
-        private static readonly HttpClient http = new HttpClient();
-        public static async void SendWebHook(string message)
-        {
-
-           
-
-            var values = new Dictionary<string, string>
-                        {
-                            { "username", "Zoom Logs" },
-                            { "content", message },
-                            { "avatar", "https://www.publiccounsel.net/train/wp-content/uploads/sites/13/5e8ce318664eae0004085461.png" },
-                            { "embeds", embed }
-                        };
-            
-            var content = new FormUrlEncodedContent(values);
-            var response = await http.PostAsync("https://discordapp.com/api/webhooks/775279806773985292/XqzTnS5Ako0fRdeXkiAa18CgOwtliRCrHGwqNX-O5LYesg4rCak26PsAa7soHSdwaKWe", content);
-            var responseString = await response.Content.ReadAsStringAsync();
-        }*/
 
         public static string AmpmTo24(DateTime time)
         {
@@ -193,16 +169,76 @@ namespace Zoom_Auto_Join
             return Convert.ToDateTime(time).ToString("hh:mm:ss") + " " + Convert.ToDateTime(time).ToString("tt");
         }
 
+        public static void initializeText()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.WriteLine("███████╗░█████╗░░█████╗░███╗░░░███╗");
+            Console.WriteLine("╚════██║██╔══██╗██╔══██╗████╗░████║");
+            Console.WriteLine("░░███╔═╝██║░░██║██║░░██║██╔████╔██║");
+            Console.WriteLine("██╔══╝░░██║░░██║██║░░██║██║╚██╔╝██║");
+            Console.WriteLine("███████╗╚█████╔╝╚█████╔╝██║░╚═╝░██║");
+            Console.WriteLine("╚══════╝░╚════╝░░╚════╝░╚═╝░░░░░╚═╝");
+            Console.WriteLine("");
+            Console.WriteLine("░█████╗░██╗░░░██╗████████╗░█████╗░░░░░░░░░░░░██╗░█████╗░██╗███╗░░██╗███████╗██████╗░");
+            Console.WriteLine("██╔══██╗██║░░░██║╚══██╔══╝██╔══██╗░░░░░░░░░░░██║██╔══██╗██║████╗░██║██╔════╝██╔══██╗");
+            Console.WriteLine("███████║██║░░░██║░░░██║░░░██║░░██║█████╗░░░░░██║██║░░██║██║██╔██╗██║█████╗░░██████╔╝");
+            Console.WriteLine("██╔══██║██║░░░██║░░░██║░░░██║░░██║╚════╝██╗░░██║██║░░██║██║██║╚████║██╔══╝░░██╔══██╗");
+            Console.WriteLine("██║░░██║╚██████╔╝░░░██║░░░╚█████╔╝░░░░░░╚█████╔╝╚█████╔╝██║██║░╚███║███████╗██║░░██║");
+            Console.WriteLine("╚═╝░░╚═╝░╚═════╝░░░░╚═╝░░░░╚════╝░░░░░░░░╚════╝░░╚════╝░╚═╝╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("Made by smashguns#6175");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
 
+        public class settings
+        {
+            public string className { get; set; }
+            public string mondayTime { get; set; }
+            public string regularTime { get; set; }
+            public string link { get; set; }
+        }
 
+        public static void checkForSettings()
+        {
+            //var MyIni = new IniFile("settings.ini");
+            if (File.Exists("settings.json"))
+            {
+                //var settings = MyIni.Read("class[]", "Classess");
+                var json = File.ReadAllText("settings.json");
+                //JObject settingsjson = JObject.Parse(fileInfo);
+                DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
 
+                DataTable dataTable = dataSet.Tables["Info"];
+
+                //Console.WriteLine(dataTable.Rows.Count);
+                // 2
+                
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+
+                    Console.WriteLine(row["class"] + " - " + row["link"]);
+                }
+                // 0 - item 0
+                // 1 - item 1
+            }
+            else
+            {
+                Console.WriteLine("settings.json doesnt exist!");
+            }
+        }
 
 
 
         static void Main(string[] args)
         {
             DiscordStatus();
+            initializeText();
+            checkForSettings();
 
+
+            /*
             if (!File.Exists("settings.ini"))
             {
                 var MyIni = new IniFile("settings.ini");
@@ -303,11 +339,12 @@ namespace Zoom_Auto_Join
                 Console.WriteLine("Seems like classess ended");
             }
             
-            
+            */
             client.UpdateEndTime();
             client.Dispose();
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
+            
         }
     }
 }
