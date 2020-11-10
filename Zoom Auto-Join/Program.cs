@@ -17,45 +17,69 @@ namespace Zoom_Auto_Join
     class Program
     {
         /*
-          {
-            { "Physics", "12:00:00 AM", "google.com"  },
-            { "English", "12:01:00 AM", "youutube.com" },
-            { "Math", "12:03:00 AM", "foo.com" },
-          }
+           {
+                { "Physics", "11:40:30 PM", "12:00:00 AM", "google.com"  },
+                { "English", "9:00:00 AM", "12:01:00 AM", "youutube.com" },
+                { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
+           }
          */
-
+        
         public class Zoom
         {
             // Constructor that takes one argument:
             public Zoom(string[,] classess)
             {
-                
-                    Console.WriteLine(classess.Length);
-               
-                
+                string[] className = { classess[0,0], classess[1,0], classess[2,0] };
+                string[] mondayTimes = { AmpmTo24(Convert.ToDateTime(classess[0, 1])), AmpmTo24(Convert.ToDateTime(classess[1, 1])), AmpmTo24(Convert.ToDateTime(classess[2, 1])) };
+                string[] regularTimes = { AmpmTo24(Convert.ToDateTime(classess[0, 2])), AmpmTo24(Convert.ToDateTime(classess[1, 2])), AmpmTo24(Convert.ToDateTime(classess[2, 2])) };
+                string[] classLinks = { classess[0, 3], classess[1, 3], classess[2, 3] };
+
+                while (true)
+                {
+                    for (int x = 0; x < mondayTimes.Length; x++)
+                    {
+                        for (int y = 0; y < regularTimes.Length; y++)
+                        {
+                            
+                            if (isItClassTime(regularTimes[y]))
+                            {
+                                Console.WriteLine("{0} has started, joinning link {1}", className[y], classLinks[y]);
+                                joinClass(classLinks[y]);
+                                SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[y]);
+                            }
+                        }
+                        if (isItClassTime(mondayTimes[x]))
+                        {
+                            if(DateTime.Now.DayOfWeek == DayOfWeek.Monday) { 
+                                Console.WriteLine("Today is monday, using mondays schedule!");
+                                // Add a check to see if sounds disabled and if custom sound
+                                SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
+                                audio.Play();
+
+                                Console.WriteLine("{0} has started, joinning link {1}", className[x], classLinks[x]);
+                                joinClass(classLinks[x]);
+                                SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[x]);
+                            }
+                        }
+                    }
+                    Thread.Sleep(100);
+                }
             }
 
-            //var zoom = new Zoom(new string[] { new string[] { "Physics", "12:00:00 AM", "youtube.com" }, new string[] { "English", "12:01:00 AN", "google.com" } });
-
-
-            //string[] classess = { { "Period 1", "12:00:00 AM", "Google.com" }, { "Period 2", "12:01:00 AM", "youtube.com" } };
-            /*string[,] classess = new string[,]
-            { 
-                { "A", "AB", "AC" }, { "B", "BC", "BA" }, { "C", "CA", "CB" }
-            };*/
-
-
-
-
-
-            
-
-
+            public bool isItClassTime(string time)
+            {
+                if(DateTime.Now.ToString("HH:mm:ss") == time)
+                {
+                    return true;
+                }
+                return false;
+            }
 
             public void joinClass(string link)
             {
                 Process.Start("chrome.exe", link);
                 Console.WriteLine("Joining class link: " + link);
+                Thread.Sleep(5000);
             }
 
 
@@ -105,16 +129,54 @@ namespace Zoom_Auto_Join
             client.UpdateStartTime();
         }
 
+        
+        public async static void SendWebHook(string joinTime, string link)
+        {
+            var client = new DiscordWebhookClient("https://discordapp.com/api/webhooks/775279806773985292/XqzTnS5Ako0fRdeXkiAa18CgOwtliRCrHGwqNX-O5LYesg4rCak26PsAa7soHSdwaKWe");
+
+            // Create your DiscordMessage with all parameters of your message.
+            var message = new DiscordMessage(
+                DateTime.Now.ToString("MMM dd, yyyy HH:mm:ss tt"),
+                username: "Zoom Logs",
+                avatarUrl: "https://www.publiccounsel.net/train/wp-content/uploads/sites/13/5e8ce318664eae0004085461.png",
+                tts: false,
+                embeds: new[]
+                {
+                    new DiscordMessageEmbed(
+                        "Current Logs",
+                        color: 0,
+                        author: new DiscordMessageEmbedAuthor("By smashguns#6175"),
+                        //url: "https://www.publiccounsel.net/train/wp-content/uploads/sites/13/5e8ce318664eae0004085461.png",
+                        //description: "This is a embed description.",
+                        fields: new[]
+                        {
+                            new DiscordMessageEmbedField("Joined Time", joinTime),
+                            new DiscordMessageEmbedField("Link", link)
+                        },
+                       
+                        footer: new DiscordMessageEmbedFooter("Made by smashguns#6175 • " + DateTime.Now, "https://cdn.discordapp.com/avatars/242889488785866752/40ee66d845e1a6341e03c450fcf6d221.png?size=256")
+                    )
+                }
+                );
+
+            // Send the message!
+            await client.SendToDiscord(message);
+        }
+        
+
         /*
         private static readonly HttpClient http = new HttpClient();
         public static async void SendWebHook(string message)
         {
+
+           
+
             var values = new Dictionary<string, string>
                         {
                             { "username", "Zoom Logs" },
                             { "content", message },
                             { "avatar", "https://www.publiccounsel.net/train/wp-content/uploads/sites/13/5e8ce318664eae0004085461.png" },
-                            { "embeds", "" }
+                            { "embeds", embed }
                         };
             
             var content = new FormUrlEncodedContent(values);
@@ -139,25 +201,7 @@ namespace Zoom_Auto_Join
 
         static void Main(string[] args)
         {
-            /*
-            string[] links = { "google.com", "youtube.com" };
-            string[] periods = { "Physics": {"12:00:00AM", "google.com"}, "English": {"12:01:00AM", "youtube.com"}, "Math": {"12:02:00AM", "yahoo.com"}}
-            string[] times = { "12:00:00 AM", "12:01:00 AM"};
-            var zoom = new Zoom(links,times);*/
-
-            //string[] periods = { "Physics": {"12:00:00AM", "google.com"}, "English": {"12:01:00AM", "youtube.com"}, "Math": {"12:02:00AM", "yahoo.com"}}
-
-       
             DiscordStatus();
-            var zoom = new Zoom
-                    (new string[,]
-                        {
-                            { "Physics", "12:00:00 AM", "google.com"  },
-                            { "English", "12:01:00 AM", "youutube.com" },
-                            { "Math", "12:03:00 AM", "foo.com" },
-                        }
-                    );
-
 
             if (!File.Exists("settings.ini"))
             {
@@ -248,33 +292,14 @@ namespace Zoom_Auto_Join
                 Console.WriteLine("Made by smashguns#6175");
                 Console.ForegroundColor = ConsoleColor.White;
                 //new Zoom(new string[] { new string[] { "Physics", "12:00:00 AM", "youtube.com" }, new string[] { "English", "12:01:00 AN", "google.com" } });
-                
 
-                if (DateTime.Now.DayOfWeek == DayOfWeek.Monday)
+                var zoom = new Zoom
+                (new string[,]
                 {
-                    Console.WriteLine("Today is monday");
-                    /*
-                    var zoom1 = new Zoom(period1L, MondaytimeValue1.ToString("HH:mm:ss"));        
-                    zoom1.joinClassOnReady();
-                      
-                    var zoom2 = new Zoom(period2L, MondaytimeValue2.ToString("HH:mm:ss"));
-                    zoom2.joinClassOnReady();
-
-                    var zoom3 = new Zoom(period3L, MondaytimeValue3.ToString("HH:mm:ss"));
-                    zoom3.joinClassOnReady();*/
-                }
-                else
-                {
-                    /*
-                    var zoom1 = new Zoom(period1L, timeValue1.ToString("HH:mm:ss"));
-                    zoom1.joinClassOnReady();
-                    
-                    var zoom2 = new Zoom(period2L, timeValue2.ToString("HH:mm:ss"));
-                    zoom2.joinClassOnReady();
-
-                    var zoom3 = new Zoom(period3L, timeValue3.ToString("HH:mm:ss"));
-                    zoom3.joinClassOnReady();*/
-                }
+                    { "Physics", "01:02:30 AM", "01:11:30 AM", "google.com"  },
+                    { "English", "12:09:40 AM", "12:19:35 AM", "youtube.com" },
+                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
+                });
                 Console.WriteLine("Seems like classess ended");
             }
             
