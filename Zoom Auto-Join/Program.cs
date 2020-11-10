@@ -25,8 +25,9 @@ namespace Zoom_Auto_Join
             }
             
             public void joinClassOnReady() {
-                
-                Console.WriteLine("Waiting to join class at " + Convert.ToDateTime(this.Time).ToString("hh:mm:ss") + " " + Convert.ToDateTime(this.Time).ToString("tt"));
+
+                //Console.WriteLine("This.time = " + this.Time + "\nCurrent Time = "+ DateTime.Now.ToString("HH:mm:ss"));
+                Console.WriteLine("Waiting to join class at " + Convert.ToDateTime(this.Time).ToString("HH:mm:ss") + " " + Convert.ToDateTime(this.Time).ToString("tt"));
                 var MyIni = new IniFile("settings.ini");
                 var joinSound = MyIni.Read("Join Sound", "Sound");
                 var soundsEnabled = Convert.ToBoolean(MyIni.Read("Mute Sounds", "Sound"));
@@ -127,8 +128,8 @@ namespace Zoom_Auto_Join
         static void Main(string[] args)
         {
             DiscordStatus();
-            
 
+            
             if (!File.Exists("settings.ini"))
             {
                 var MyIni = new IniFile("settings.ini");
@@ -160,9 +161,9 @@ namespace Zoom_Auto_Join
             {
                 
                 var MyIni = new IniFile("settings.ini");
-                var Mondayperiod1T = MyIni.Read("Period1Time", "Periods");
-                var Mondayperiod2T = MyIni.Read("Period2Time", "Periods");
-                var Mondayperiod3T = MyIni.Read("Period3Time", "Periods");
+                var Mondayperiod1T = MyIni.Read("MondayPeriod1Time", "Periods");
+                var Mondayperiod2T = MyIni.Read("MondayPeriod2Time", "Periods");
+                var Mondayperiod3T = MyIni.Read("MondayPeriod3Time", "Periods");
 
                 var period1T = MyIni.Read("Period1Time", "Periods");
                 var period2T = MyIni.Read("Period2Time", "Periods");
@@ -174,8 +175,8 @@ namespace Zoom_Auto_Join
 
                 var soundsEnabled = Convert.ToBoolean(MyIni.Read("Mute Sounds", "Sound"));
                 var introSound = MyIni.Read("Start Up Sound", "Sound");
-                
 
+                Console.WriteLine("Mondayperiod1T = " + Mondayperiod1T);
 
 
                 if(string.IsNullOrEmpty(introSound))
@@ -191,9 +192,11 @@ namespace Zoom_Auto_Join
                 
                 
 
-                DateTime MondaytimeValue1 = Convert.ToDateTime(period1T);
-                DateTime MondaytimeValue2 = Convert.ToDateTime(period2T);
-                DateTime MondaytimeValue3 = Convert.ToDateTime(period3T);
+                DateTime MondaytimeValue1 = Convert.ToDateTime(Mondayperiod1T);
+                DateTime MondaytimeValue2 = Convert.ToDateTime(Mondayperiod2T);
+                DateTime MondaytimeValue3 = Convert.ToDateTime(Mondayperiod3T);
+
+                Console.WriteLine("MondaytimeValue1 = " + MondaytimeValue1.ToString("HH:mm:ss"));
 
                 DateTime timeValue1 = Convert.ToDateTime(period1T);
                 DateTime timeValue2 = Convert.ToDateTime(period2T);
@@ -221,6 +224,8 @@ namespace Zoom_Auto_Join
                 
                 if (DateTime.Now.DayOfWeek == DayOfWeek.Monday)
                 {
+                    Console.WriteLine("Today is monday");
+                    
                     var zoom1 = new Zoom(period1L, MondaytimeValue1.ToString("HH:mm:ss"));        
                     zoom1.joinClassOnReady();
                       
