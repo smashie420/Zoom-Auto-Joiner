@@ -28,3 +28,20 @@ H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Release\Zoom Auto-Join
 H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Release\Zoom Auto-Join.csproj.CopyComplete
 H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Release\Zoom Auto-Join.exe
 H:\Devins Stuff\Sources\Zoom Auto-Join\Zoom Auto-Join\obj\Release\Zoom Auto-Join.pdb
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Release\Zoom Auto-Join.exe.config
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Release\Zoom Auto-Join.exe
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Release\Zoom Auto-Join.pdb
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Release\DiscordRPC.xml
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Release\Newtonsoft.Json.xml
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Release\Polly.xml
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Release\System.Net.Http.Formatting.xml
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\bin\Release\System.ValueTuple.xml
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Release\Zoom Auto-Join.csprojAssemblyReference.cache
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Release\Zoom Auto-Join.exe.config
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Release\Zoom_Auto_Join.Properties.Resources.resources
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Release\Zoom Auto-Join.csproj.GenerateResource.cache
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Release\Zoom Auto-Join.csproj.CoreCompileInputs.cache
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Release\Zoom Auto-Join.csproj.CopyComplete
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Release\Zoom Auto-Join.exe
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Release\Zoom Auto-Join.pdb
+C:\Users\devin\Source\Repos\smashie420\Zoom-Auto-Joiner\Zoom Auto-Join\obj\Release\Zoom Auto-Join.csproj.Fody.CopyLocal.cache

@@ -106,7 +106,7 @@ namespace Zoom_Auto_Join
         {
             Random rnd = new Random();
 
-            int single = rnd.Next(1, 3);
+            int single = rnd.Next(1, 6);
             string[] imagetextArr = { "Dying", "Im fucking bored", "Lazzy", "Holy fuck im coding this at 3AM", "Epic" };
             int randomTxtArr = rnd.Next(1, imagetextArr.Length + 1);
 
