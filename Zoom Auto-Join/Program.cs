@@ -111,7 +111,7 @@ namespace Zoom_Auto_Join
             int randomTxtArr = rnd.Next(1, imagetextArr.Length + 1);
 
 
-
+            
             client.Initialize();
 
             client.SetPresence(new RichPresence()
