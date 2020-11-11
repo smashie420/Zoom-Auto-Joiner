@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Threading;
 using DiscordRPC;
@@ -16,18 +18,57 @@ namespace Zoom_Auto_Join
     class Program
     {
         /*
-           {
-                { "Physics", "11:40:30 PM", "12:00:00 AM", "google.com"  },
-                { "English", "9:00:00 AM", "12:01:00 AM", "youutube.com" },
-                { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
-           }
+            Info to get =               0               1               2               3   
+            classess[0,infotoget] = {   "Physics",    "01:02:30 AM",  "01:11:30 AM",  "google.com"  },
+            classess[1,infotoget] ={    "English",    "12:09:40 AM",  "12:19:35 AM",  "youtube.com" },
+            classess[2,infotoget] = {   "Math",       "10:00:00 AM",  "12:03:00 AM",  "foo.com" },
          */
-        
+        public static int getCollums(Array arr)
+        {
+            int rows = arr.Length / 4;
+            int result = 0;
+            for (int rowsInArray = 0; rowsInArray < rows; rowsInArray++)
+            {
+                result++;
+            }
+            return result;
+        }
+        public static int getRows(Array arr)
+        {
+            int rows = arr.Length / 4;
+            int result = 0;
+            for (int a = 0; a <= rows; a++)
+            {
+                result++;
+            }
+            return result;
+        }
         public class Zoom
         {
             // Constructor that takes one argument:
             public Zoom(string[,] classess)
             {
+                Console.WriteLine("Amount of rows = " + getRows(classess));
+                Console.WriteLine("Amount of Collums = " + getCollums(classess));
+                
+                for(int rowID = 0; rowID < getRows(classess); rowID++)
+                {
+                    Console.WriteLine("RowID = " + rowID);
+                }
+                Console.WriteLine("Done");
+                /*
+                for (int a = 0; a < classess.Length / 4; a++)
+                {
+                    info = { };
+
+                    //string[] info = { classess[a,1] };
+
+                    foreach (string classe in info){
+                        Console.WriteLine(classe);
+                    }
+                }*/
+
+                /*
                 string[] className = { classess[0,0], classess[1,0], classess[2,0] };
                 string[] mondayTimes = { AmpmTo24(Convert.ToDateTime(classess[0, 1])), AmpmTo24(Convert.ToDateTime(classess[1, 1])), AmpmTo24(Convert.ToDateTime(classess[2, 1])) };
                 string[] regularTimes = { AmpmTo24(Convert.ToDateTime(classess[0, 2])), AmpmTo24(Convert.ToDateTime(classess[1, 2])), AmpmTo24(Convert.ToDateTime(classess[2, 2])) };
@@ -62,7 +103,8 @@ namespace Zoom_Auto_Join
                         }
                     }
                     Thread.Sleep(100);
-                }
+                    
+                }*/
             }
 
             public bool isItClassTime(string time)
@@ -105,9 +147,9 @@ namespace Zoom_Auto_Join
         {
             Random rnd = new Random();
 
-            int single = rnd.Next(1, 6);
+            int single = rnd.Next(1, 5);
             string[] imagetextArr = { "Dying", "Im fucking bored", "Lazzy", "Holy fuck im coding this at 3AM", "Epic" };
-            int randomTxtArr = rnd.Next(1, imagetextArr.Length + 1);
+            int randomTxtArr = rnd.Next(1, imagetextArr.Length);
 
 
             
@@ -204,41 +246,94 @@ namespace Zoom_Auto_Join
             //var MyIni = new IniFile("settings.ini");
             if (File.Exists("settings.json"))
             {
-                //var settings = MyIni.Read("class[]", "Classess");
-                var json = File.ReadAllText("settings.json");
-                //JObject settingsjson = JObject.Parse(fileInfo);
-                DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
-
-                DataTable dataTable = dataSet.Tables["Info"];
-
-                //Console.WriteLine(dataTable.Rows.Count);
-                // 2
-                
-
-
-                foreach (DataRow row in dataTable.Rows)
-                {
-
-                    Console.WriteLine(row["class"] + " - " + row["link"]);
-                }
-                // 0 - item 0
-                // 1 - item 1
+                Console.WriteLine("Reading from settings.json");
+                readSettings();
             }
             else
             {
-                Console.WriteLine("settings.json doesnt exist!");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n\n\nsettings.json doesnt exist! Making one now!");
+                Console.ForegroundColor = ConsoleColor.White;
+                
+                using (StreamWriter writer = File.CreateText("settings.json"))
+                {
+                    writer.WriteLine(@"{
+	""Info"": [
+	    {
+		""class"": ""ClassName3"",
+		""mondayTime"": ""12:00:00 AM"",
+		""regularTime"": ""12:10:00 AM"",
+		""link"": ""google.com""
+	    },
+	    {
+		""class"": ""ClassName2"",
+		""mondayTime"": ""01:00:00 AM"",
+		""regularTime"": ""02:10:00 AM"",
+		""link"": ""google.com""
+	    },
+	    {
+		""class"": ""ClassName3"",
+		""mondayTime"": ""03:00:00 AM"",
+		""regularTime"": ""04:10:00 AM"",
+		""link"": ""google.com""
+	    },
+	]
+}
+                   
+                    ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("settings.json has been made!\nEdit the file to your classess!\n\n\n");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+
             }
         }
 
+        public static void readSettings()
+        {
+            //var settings = MyIni.Read("class[]", "Classess");
+            var json = File.ReadAllText("settings.json");
+        
+
+
+
+            
+            DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
+
+            DataTable dataTable = dataSet.Tables["Info"];
+
+            //Console.WriteLine(dataTable.Rows.Count);
+            // 2
+
+
+            
+            foreach (DataRow row in dataTable.Rows)
+            {
+
+                Console.WriteLine(row["class"] + " - " + row["link"]);
+                var zoom = new Zoom
+                (new string[,]
+                {
+                    { row["class"].ToString(), row["mondayTime"].ToString(), row["regularTime"].ToString(), row["link"].ToString()  },
+                });
+            }
+        }
 
 
         static void Main(string[] args)
         {
             DiscordStatus();
             initializeText();
-            checkForSettings();
+            //checkForSettings();
+            var zoom = new Zoom
+                (new string[,]
+                {
+                    { "Physics", "01:02:30 AM", "01:11:30 AM", "google.com"  },
+                    { "English", "12:09:40 AM", "12:19:35 AM", "youtube.com" },
+                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
+                });
 
-
+            Console.WriteLine("Seems like classess ended");
             /*
             if (!File.Exists("settings.ini"))
             {

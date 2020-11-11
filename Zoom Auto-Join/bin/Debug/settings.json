@@ -1,22 +1,24 @@
 {
 	"Info": [
-	  {
-		"class": "Physics",
+	    {
+		"class": "ClassName1",
 		"mondayTime": "12:00:00 AM",
 		"regularTime": "12:10:00 AM",
 		"link": "google.com"
-	  },
-	  {
-		"class": "English",
+	    },
+	    {
+		"class": "ClassName2",
 		"mondayTime": "01:00:00 AM",
 		"regularTime": "02:10:00 AM",
-		"link": "boo.com"
-	  },
-	  {
-		"class": "Math",
+		"link": "google1.com"
+	    },
+	    {
+		"class": "ClassName3",
 		"mondayTime": "03:00:00 AM",
 		"regularTime": "04:10:00 AM",
-		"link": "foo.com"
-	  },
+		"link": "google2.com"
+	    },
 	]
 }
+                   
+                    
