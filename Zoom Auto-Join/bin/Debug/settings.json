@@ -1,22 +1,22 @@
 {
 	"Info": [
 	    {
-		"class": "ClassName1",
-		"mondayTime": "12:00:00 AM",
-		"regularTime": "12:10:00 AM",
+		"class": "Debug1",
+		"mondayTime": "09:37:00 PM",
+		"regularTime": "09:40:30 PM",
 		"link": "google.com"
 	    },
 	    {
-		"class": "ClassName2",
-		"mondayTime": "01:00:00 AM",
-		"regularTime": "02:10:00 AM",
-		"link": "google1.com"
+		"class": "Debug2",
+		"mondayTime": "09:37:10 PM",
+		"regularTime": "09:40:55 PM",
+		"link": "foo.com"
 	    },
 	    {
-		"class": "ClassName3",
+		"class": "Debug3",
 		"mondayTime": "03:00:00 AM",
 		"regularTime": "04:10:00 AM",
-		"link": "google2.com"
+		"link": "boo.com"
 	    },
 	]
 }

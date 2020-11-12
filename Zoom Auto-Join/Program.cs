@@ -17,12 +17,7 @@ namespace Zoom_Auto_Join
 {
     class Program
     {
-        /*
-            Info to get =               0               1               2               3   
-            classess[0,infotoget] = {   "Physics",    "01:02:30 AM",  "01:11:30 AM",  "google.com"  },
-            classess[1,infotoget] ={    "English",    "12:09:40 AM",  "12:19:35 AM",  "youtube.com" },
-            classess[2,infotoget] = {   "Math",       "10:00:00 AM",  "12:03:00 AM",  "foo.com" },
-         */
+        
         public static int getCollums(Array arr)
         {
             int rows = arr.Length / 4;
@@ -43,37 +38,81 @@ namespace Zoom_Auto_Join
             }
             return result;
         }
+
+        public static void throwErr(string txt)
+        {
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("ERROR: \n" + txt + "\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Black;
+        }
+        public static void throwWarning(string txt)
+        {
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("WARNING: \n" + txt + "\n");
+            Console.BackgroundColor = ConsoleColor.Black;
+        }
+        public static void throwSuccess(string txt)
+        {
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.WriteLine("Success: \n" + txt + "\n");
+            Console.BackgroundColor = ConsoleColor.Black;
+        }
+        public static void throwDebug(string txt)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("Success: \n" + txt + "\n");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+        /*
+            Info to get =               0               1               2               3   
+            classess[0,infotoget] = {   "Physics",    "01:02:30 AM",  "01:11:30 AM",  "google.com"  },
+            classess[1,infotoget] ={    "English",    "12:09:40 AM",  "12:19:35 AM",  "youtube.com" },
+            classess[2,infotoget] = {   "Math",       "10:00:00 AM",  "12:03:00 AM",  "foo.com" },
+         */
         public class Zoom
         {
             // Constructor that takes one argument:
             public Zoom(string[,] classess)
             {
-                Console.WriteLine("Amount of rows = " + getRows(classess));
-                Console.WriteLine("Amount of Collums = " + getCollums(classess));
+                if(getCollums(classess) == 0) { throwErr("Didnt recieve any class data!"); return; }
+                //Console.WriteLine("Amount of rows = " + getRows(classess));
+                //Console.WriteLine("Amount of Collums = " + getCollums(classess));
+
+                string[] className = new string[classess.Length / 4];
+                string[] mondayTimes = new string[classess.Length / 4];
+                string[] regularTimes = new string[classess.Length / 4];
+                string[] classLinks = new string[classess.Length / 4];
                 
-                for(int rowID = 0; rowID < getRows(classess); rowID++)
+                //for (int rowID = 0; rowID < getRows(classess); rowID++)
+                //{
+                //Console.WriteLine("RowID = " + rowID);
+                for (int collumID = 0; collumID < getCollums(classess); collumID++)
                 {
-                    Console.WriteLine("RowID = " + rowID);
+                    //Console.WriteLine("CollumID = " + collumID);
+                    className[collumID] = classess[collumID, 0].ToString();
+                    mondayTimes[collumID] = AmpmTo24(Convert.ToDateTime(classess[collumID, 1].ToString()));
+                    regularTimes[collumID] = AmpmTo24(Convert.ToDateTime(classess[collumID, 2].ToString()));
+                    classLinks[collumID] = classess[collumID, 3].ToString();
                 }
-                Console.WriteLine("Done");
+                throwSuccess("Waiting for class to start, sit back relax");
+              
+                //}
+                
                 /*
-                for (int a = 0; a < classess.Length / 4; a++)
+                foreach(string result in mondayTimes)
                 {
-                    info = { };
-
-                    //string[] info = { classess[a,1] };
-
-                    foreach (string classe in info){
-                        Console.WriteLine(classe);
-                    }
-                }*/
+                    Console.WriteLine(result);
+                }
+                */
 
                 /*
                 string[] className = { classess[0,0], classess[1,0], classess[2,0] };
                 string[] mondayTimes = { AmpmTo24(Convert.ToDateTime(classess[0, 1])), AmpmTo24(Convert.ToDateTime(classess[1, 1])), AmpmTo24(Convert.ToDateTime(classess[2, 1])) };
                 string[] regularTimes = { AmpmTo24(Convert.ToDateTime(classess[0, 2])), AmpmTo24(Convert.ToDateTime(classess[1, 2])), AmpmTo24(Convert.ToDateTime(classess[2, 2])) };
                 string[] classLinks = { classess[0, 3], classess[1, 3], classess[2, 3] };
-
+                */
                 while (true)
                 {
                     for (int x = 0; x < mondayTimes.Length; x++)
@@ -104,7 +143,7 @@ namespace Zoom_Auto_Join
                     }
                     Thread.Sleep(100);
                     
-                }*/
+                }
             }
 
             public bool isItClassTime(string time)
@@ -173,6 +212,7 @@ namespace Zoom_Auto_Join
         
         public async static void SendWebHook(string joinTime, string link)
         {
+            
             var client = new DiscordWebhookClient("https://discordapp.com/api/webhooks/775279806773985292/XqzTnS5Ako0fRdeXkiAa18CgOwtliRCrHGwqNX-O5LYesg4rCak26PsAa7soHSdwaKWe");
 
             // Create your DiscordMessage with all parameters of your message.
@@ -191,7 +231,7 @@ namespace Zoom_Auto_Join
                         //description: "This is a embed description.",
                         fields: new[]
                         {
-                            new DiscordMessageEmbedField("Joined Time", joinTime),
+                            new DiscordMessageEmbedField("Joined Time", MilitaryToAmPm(Convert.ToDateTime(joinTime))),
                             new DiscordMessageEmbedField("Link", link)
                         },
                        
@@ -229,7 +269,7 @@ namespace Zoom_Auto_Join
             Console.WriteLine("██║░░██║╚██████╔╝░░░██║░░░╚█████╔╝░░░░░░╚█████╔╝╚█████╔╝██║██║░╚███║███████╗██║░░██║");
             Console.WriteLine("╚═╝░░╚═╝░╚═════╝░░░░╚═╝░░░░╚════╝░░░░░░░░╚════╝░░╚════╝░╚═╝╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝");
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("Made by smashguns#6175");
+            Console.WriteLine("Made by smashguns#6175\n\n");
             Console.ForegroundColor = ConsoleColor.White;
         }
 
@@ -246,7 +286,7 @@ namespace Zoom_Auto_Join
             //var MyIni = new IniFile("settings.ini");
             if (File.Exists("settings.json"))
             {
-                Console.WriteLine("Reading from settings.json");
+                throwDebug("Reading from settings.json");
                 readSettings();
             }
             else
@@ -288,16 +328,30 @@ namespace Zoom_Auto_Join
 
             }
         }
-
+        /*
+         
+            string[] className = new string[classess.Length / 4];
+            string[] mondayTimes = new string[classess.Length / 4];
+            string[] regularTimes = new string[classess.Length / 4];
+            string[] classLinks = new string[classess.Length / 4];
+                
+            //for (int rowID = 0; rowID < getRows(classess); rowID++)
+            //{
+            //Console.WriteLine("RowID = " + rowID);
+            for (int collumID = 0; collumID < getCollums(classess); collumID++)
+            {
+                //Console.WriteLine("CollumID = " + collumID);
+                className[collumID] = classess[collumID, 0].ToString();
+                mondayTimes[collumID] = AmpmTo24(Convert.ToDateTime(classess[collumID, 1].ToString()));
+                regularTimes[collumID] = AmpmTo24(Convert.ToDateTime(classess[collumID, 2].ToString()));
+                classLinks[collumID] = classess[collumID, 3].ToString();
+            }
+         */
         public static void readSettings()
         {
             //var settings = MyIni.Read("class[]", "Classess");
             var json = File.ReadAllText("settings.json");
-        
 
-
-
-            
             DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
 
             DataTable dataTable = dataSet.Tables["Info"];
@@ -306,17 +360,70 @@ namespace Zoom_Auto_Join
             // 2
 
 
-            
+            //string[,] classess = new string[10,4];
+
+            Array[] unformattedArr = new Array[4];
+
+            string[] className = new string[4];
+            string[] mondayTimes = new string[4];
+            string[] regularTimes = new string[4];
+            string[] classLinks = new string[4];
+            int i = 0;
             foreach (DataRow row in dataTable.Rows)
             {
+                className[i] = row["class"].ToString();
+                mondayTimes[i] = row["mondayTime"].ToString();
+                regularTimes[i] = row["regularTime"].ToString();
+                classLinks[i] = row["link"].ToString();
 
-                Console.WriteLine(row["class"] + " - " + row["link"]);
+                //Console.WriteLine(row["class"] + " - " + row["link"]);
+                /*
                 var zoom = new Zoom
                 (new string[,]
                 {
                     { row["class"].ToString(), row["mondayTime"].ToString(), row["regularTime"].ToString(), row["link"].ToString()  },
-                });
+                });*/
+
+                unformattedArr[i] = new string[] { className[i], mondayTimes[i], regularTimes[i], classLinks[i] };
+                i++;
             }
+
+
+            int fora = 0;
+            int forb = 0;
+            Console.WriteLine(unformattedArr.Length);
+            for(int a = 0; a < unformattedArr.Length; a++)
+            {
+                Console.WriteLine(unformattedArr[a]);
+            }
+            
+            /*
+
+            foreach (string[] text in unformattedArr)
+            {
+                Console.WriteLine("FOR A = " + fora);
+                foreach (string res in text)
+                {
+                    Console.WriteLine("FOR B = "+ forb);
+                    Console.WriteLine(res);
+                    
+                    forb++;
+                }
+                fora++;
+            }*/
+
+            /*
+            Info to get =               0               1               2               3   
+            classess[0,infotoget] = {   "Physics",    "01:02:30 AM",  "01:11:30 AM",  "google.com"  },
+            classess[1,infotoget] ={    "English",    "12:09:40 AM",  "12:19:35 AM",  "youtube.com" },
+            classess[2,infotoget] = {   "Math",       "10:00:00 AM",  "12:03:00 AM",  "foo.com" },
+            */
+            /*
+            var zoom = new Zoom
+                (new string[,]
+                {
+                    { row["class"].ToString(), row["mondayTime"].ToString(), row["regularTime"].ToString(), row["link"].ToString()  },
+                });*/
         }
 
 
@@ -324,14 +431,23 @@ namespace Zoom_Auto_Join
         {
             DiscordStatus();
             initializeText();
-            //checkForSettings();
+            checkForSettings();
+
+            /*
             var zoom = new Zoom
                 (new string[,]
                 {
-                    { "Physics", "01:02:30 AM", "01:11:30 AM", "google.com"  },
+                    { "Physics", "01:02:30 PM", "01:11:30 PM", "google.com"  },
                     { "English", "12:09:40 AM", "12:19:35 AM", "youtube.com" },
                     { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
+                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
+                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
+                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
+                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
+                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
+                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
                 });
+            */
 
             Console.WriteLine("Seems like classess ended");
             /*
