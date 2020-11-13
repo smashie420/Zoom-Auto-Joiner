@@ -1,23 +1,37 @@
 {
 	"Info": [
 	    {
-		"class": "Debug1",
-		"mondayTime": "09:37:00 PM",
-		"regularTime": "09:40:30 PM",
-		"link": "google.com"
+		"class": "Physics",
+		"mondayTime": "09:10:00 AM",
+		"regularTime": "08:30:00 AM",
+		"link": "https://wuhsd-org.zoom.us/j/87227943667?pwd=TG1XU21rL1VhZWhrK20vOE5ocy9vdz09"
 	    },
 	    {
-		"class": "Debug2",
-		"mondayTime": "09:37:10 PM",
-		"regularTime": "09:40:55 PM",
-		"link": "foo.com"
+		"class": "English",
+		"mondayTime": "10:35:00 AM",
+		"regularTime": "09:55:00 AM",
+		"link": "https://wuhsd-org.zoom.us/j/84594753725?pwd=YTE3NFArMWFkLzg3V21xMTRpcE1udz09"
 	    },
-	    {
-		"class": "Debug3",
-		"mondayTime": "03:00:00 AM",
-		"regularTime": "04:10:00 AM",
-		"link": "boo.com"
+		{
+		"class": "Algebra",
+		"mondayTime": "12:00:00 PM",
+		"regularTime": "11:20:00 AM",
+		"link": "https://wuhsd-org.zoom.us/j/85981841307?pwd=dCs2b202SnNwSVMwMXZML2kyUStNUT09"
 	    },
+		{
+		"class": "Track",
+		"mondayTime": "02:52:00 PM",
+		"regularTime": "02:52:00 PM",
+		"link": "https://wuhsd-org.zoom.us/j/87336287354?pwd=QTQ2L1lEUGtaa1g2N2o5T0o1Y29tUT09"
+	    },
+	    
+	],
+	"Settings":[
+	{
+		"Enable Sounds": "true",
+		"Startup Sound Path": "",
+		"Join Sound Path": ""
+	}
 	]
 }
                    

@@ -8,7 +8,6 @@ using System.Media;
 using System.Threading;
 using DiscordRPC;
 
-// USE THIS
 using JNogueira.Discord.Webhook.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -50,7 +49,9 @@ namespace Zoom_Auto_Join
         public static void throwWarning(string txt)
         {
             Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine("WARNING: \n" + txt + "\n");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
         }
         public static void throwSuccess(string txt)
@@ -77,6 +78,7 @@ namespace Zoom_Auto_Join
             public Zoom(string[,] classess)
             {
                 if(getCollums(classess) == 0) { throwErr("Didnt recieve any class data!"); return; }
+                throwSuccess("Waiting for class to start, sit back relax");
                 //Console.WriteLine("Amount of rows = " + getRows(classess));
                 //Console.WriteLine("Amount of Collums = " + getCollums(classess));
 
@@ -95,8 +97,12 @@ namespace Zoom_Auto_Join
                     mondayTimes[collumID] = AmpmTo24(Convert.ToDateTime(classess[collumID, 1].ToString()));
                     regularTimes[collumID] = AmpmTo24(Convert.ToDateTime(classess[collumID, 2].ToString()));
                     classLinks[collumID] = classess[collumID, 3].ToString();
+
+                    Console.WriteLine("Waiting to join " + className[collumID]+ "...");
                 }
-                throwSuccess("Waiting for class to start, sit back relax");
+                
+                
+                
               
                 //}
                 
@@ -124,6 +130,17 @@ namespace Zoom_Auto_Join
                             {
                                 Console.WriteLine("{0} has started, joinning link {1}", className[y], classLinks[y]);
                                 joinClass(classLinks[y]);
+                                if (String.IsNullOrWhiteSpace(JoinSound))
+                                {
+                                    SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
+                                    if (enableSounds) { audio.Play(); }
+                                }
+                                else
+                                {
+                                    SoundPlayer audio = new SoundPlayer(JoinSound);
+                                    if (enableSounds) { audio.Play(); }
+                                }
+
                                 SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[y]);
                             }
                         }
@@ -132,8 +149,19 @@ namespace Zoom_Auto_Join
                             if(DateTime.Now.DayOfWeek == DayOfWeek.Monday) { 
                                 Console.WriteLine("Today is monday, using mondays schedule!");
                                 // Add a check to see if sounds disabled and if custom sound
-                                SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
-                                audio.Play();
+                                if(String.IsNullOrWhiteSpace(JoinSound))
+                                {
+                                    SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
+                                    if (enableSounds) { audio.Play(); }
+                                }
+                                else
+                                {
+                                    SoundPlayer audio = new SoundPlayer(JoinSound);
+                                    if (enableSounds) { audio.Play(); }
+                                }
+                                
+                                
+                                
 
                                 Console.WriteLine("{0} has started, joinning link {1}", className[x], classLinks[x]);
                                 joinClass(classLinks[x]);
@@ -182,6 +210,9 @@ namespace Zoom_Auto_Join
 
         // Discord ShiT
         public static readonly DiscordRpcClient client = new DiscordRpcClient("775260345597034526");
+
+       
+
         public static void DiscordStatus()
         {
             Random rnd = new Random();
@@ -300,25 +331,37 @@ namespace Zoom_Auto_Join
                     writer.WriteLine(@"{
 	""Info"": [
 	    {
-		""class"": ""ClassName3"",
-		""mondayTime"": ""12:00:00 AM"",
-		""regularTime"": ""12:10:00 AM"",
+		""class"": ""Physics"",
+		""mondayTime"": ""10:30:10 PM"",
+		""regularTime"": ""10:59:30 PM"",
 		""link"": ""google.com""
 	    },
 	    {
-		""class"": ""ClassName2"",
-		""mondayTime"": ""01:00:00 AM"",
-		""regularTime"": ""02:10:00 AM"",
-		""link"": ""google.com""
+		""class"": ""English"",
+		""mondayTime"": ""09:37:10 PM"",
+		""regularTime"": ""09:59:20 PM"",
+		""link"": ""foo.com""
 	    },
-	    {
-		""class"": ""ClassName3"",
-		""mondayTime"": ""03:00:00 AM"",
-		""regularTime"": ""04:10:00 AM"",
-		""link"": ""google.com""
+        {
+		""class"": ""Class3"",
+		""mondayTime"": ""09:37:10 PM"",
+		""regularTime"": ""09:59:20 PM"",
+		""link"": ""foo.com""
 	    },
+	    
+	],
+	""Settings"":[
+	{
+		""Enable Sounds"": ""true"",
+		""Startup Sound Path"": """",
+		""Join Sound Path"": """"
+	}
 	]
 }
+                   
+                    
+
+
                    
                     ");
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -347,14 +390,40 @@ namespace Zoom_Auto_Join
                 classLinks[collumID] = classess[collumID, 3].ToString();
             }
          */
+
+
+
+
+
+
+
+        public static bool enableSounds { get; set; }
+        public static string openSound { get; set; }
+        public static string JoinSound { get; set; }
+        public static void readSoundData()
+        {
+            var json = File.ReadAllText("settings.json");
+
+            DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
+            DataTable dataSettings = dataSet.Tables["Settings"];
+            foreach (DataRow row in dataSettings.Rows)
+            {
+                enableSounds = Convert.ToBoolean(row["Enable Sounds"]);
+                openSound = (string)row["Startup Sound Path"];
+                JoinSound = (string)row["Join Sound Path"];
+            }
+        }
+
         public static void readSettings()
         {
             //var settings = MyIni.Read("class[]", "Classess");
             var json = File.ReadAllText("settings.json");
 
             DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
+            
 
             DataTable dataTable = dataSet.Tables["Info"];
+            
 
             //Console.WriteLine(dataTable.Rows.Count);
             // 2
@@ -363,7 +432,7 @@ namespace Zoom_Auto_Join
             //string[,] classess = new string[10,4];
 
             Array[] unformattedArr = new Array[4];
-
+            Array[] formattedArr = new Array[4];
             string[] className = new string[4];
             string[] mondayTimes = new string[4];
             string[] regularTimes = new string[4];
@@ -377,38 +446,46 @@ namespace Zoom_Auto_Join
                 classLinks[i] = row["link"].ToString();
 
                 //Console.WriteLine(row["class"] + " - " + row["link"]);
-                /*
+
+                //var zoom = new Zoom
+                //(new string[,]
+                //{
+                //{ row["class"].ToString(), row["mondayTime"].ToString(), row["regularTime"].ToString(), row["link"].ToString()  },
+                //});
+
+                unformattedArr[i] = new string[] { className[i], mondayTimes[i], regularTimes[i], classLinks[i] };
+                
+                //Console.WriteLine("READSETTINGS()\nClass {0} \nMonday Time {1} \nRegular Time {2} \nClass Link {3}", className[i], mondayTimes[i], regularTimes[i], classLinks[i]);
+                 
                 var zoom = new Zoom
                 (new string[,]
                 {
-                    { row["class"].ToString(), row["mondayTime"].ToString(), row["regularTime"].ToString(), row["link"].ToString()  },
-                });*/
-
-                unformattedArr[i] = new string[] { className[i], mondayTimes[i], regularTimes[i], classLinks[i] };
+                    { className[i], mondayTimes[i], regularTimes[i], classLinks[i]  },
+                });
                 i++;
             }
+            
+
+            //formattedArr[] = unformattedArr[];
+            /*
 
 
-            int fora = 0;
-            int forb = 0;
             Console.WriteLine(unformattedArr.Length);
             for(int a = 0; a < unformattedArr.Length; a++)
             {
                 Console.WriteLine(unformattedArr[a]);
             }
             
-            /*
 
+            string[,] classess = new string[3, 4];
+            int fora = 0;
+            //int forb = 0;
+            
             foreach (string[] text in unformattedArr)
             {
-                Console.WriteLine("FOR A = " + fora);
-                foreach (string res in text)
-                {
-                    Console.WriteLine("FOR B = "+ forb);
-                    Console.WriteLine(res);
-                    
-                    forb++;
-                }
+                if (text == null) { break; }
+                //Console.WriteLine("FOR A = " + fora);
+                Console.WriteLine("TEST" +text[0]); // Returns info to Get
                 fora++;
             }*/
 
@@ -429,129 +506,33 @@ namespace Zoom_Auto_Join
 
         static void Main(string[] args)
         {
+            readSoundData();
             DiscordStatus();
             initializeText();
-            checkForSettings();
 
-            /*
-            var zoom = new Zoom
-                (new string[,]
-                {
-                    { "Physics", "01:02:30 PM", "01:11:30 PM", "google.com"  },
-                    { "English", "12:09:40 AM", "12:19:35 AM", "youtube.com" },
-                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
-                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
-                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
-                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
-                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
-                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
-                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
-                });
-            */
-
-            Console.WriteLine("Seems like classess ended");
-            /*
-            if (!File.Exists("settings.ini"))
+            if (String.IsNullOrWhiteSpace(openSound))
             {
-                var MyIni = new IniFile("settings.ini");
-
-                MyIni.Write("MondayPeriod1Time", "09:10:00 AM", "Periods");
-                MyIni.Write("MondayPeriod2Time", "10:35:00 AM", "Periods");
-                MyIni.Write("MondayPeriod3Time", "12:00:00 PM", "Periods");
-
-                MyIni.Write("Period1Time", "08:30:00 AM", "Periods");
-                MyIni.Write("Period2Time", "09:55:00 AM", "Periods");
-                MyIni.Write("Period3Time", "11:20:00 AM", "Periods");
-
-                MyIni.Write("Period1Link", "google.com", "Links");
-                MyIni.Write("Period2Link", "google.com", "Links");
-                MyIni.Write("Period3Link", "google.com", "Links");
-
-                MyIni.Write("Mute Sounds", "False", "Sound");
-
-                MyIni.Write("Start Up Sound", "", "Sound");
-                MyIni.Write("Join Sound", "", "Sound");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n\n");
-                Console.WriteLine("Check settings.txt and configure it to said periods");
-                Console.WriteLine("\n\n");
-                Console.ForegroundColor = ConsoleColor.White;
-
+                SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
+                if (enableSounds) { audio.Play(); }
             }
             else
             {
-                
-                var MyIni = new IniFile("settings.ini");
-                var Mondayperiod1T = MyIni.Read("MondayPeriod1Time", "Periods");
-                var Mondayperiod2T = MyIni.Read("MondayPeriod2Time", "Periods");
-                var Mondayperiod3T = MyIni.Read("MondayPeriod3Time", "Periods");
-
-                var period1T = MyIni.Read("Period1Time", "Periods");
-                var period2T = MyIni.Read("Period2Time", "Periods");
-                var period3T = MyIni.Read("Period3Time", "Periods");
-
-                var period1L = MyIni.Read("Period1Link", "Links");
-                var period2L = MyIni.Read("Period2Link", "Links");
-                var period3L = MyIni.Read("Period3Link", "Links");
-
-                var soundsEnabled = Convert.ToBoolean(MyIni.Read("Mute Sounds", "Sound"));
-                var introSound = MyIni.Read("Start Up Sound", "Sound");
-
-
-                if(string.IsNullOrEmpty(introSound))
+                if (Directory.Exists(openSound))
                 {
-                    SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.join);
-                    if (!soundsEnabled) { audio.Play(); }
+                    SoundPlayer audio = new SoundPlayer(openSound);
+                    if (enableSounds) { audio.Play(); }
                 }
                 else
                 {
-                    SoundPlayer audio = new SoundPlayer(introSound);
-                    if (!soundsEnabled) { audio.Play(); }
+                    throwErr("Open Sound Path doesnt exist! Check Path!");
                 }
                 
-                
-
-                DateTime MondaytimeValue1 = Convert.ToDateTime(Mondayperiod1T);
-                DateTime MondaytimeValue2 = Convert.ToDateTime(Mondayperiod2T);
-                DateTime MondaytimeValue3 = Convert.ToDateTime(Mondayperiod3T);
-
-
-                DateTime timeValue1 = Convert.ToDateTime(period1T);
-                DateTime timeValue2 = Convert.ToDateTime(period2T);
-                DateTime timeValue3 = Convert.ToDateTime(period3T);
-                // timeValue1.ToString("HH:mm:ss") RETURNS AM/PM TO 24HR clock
-
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.WriteLine("███████╗░█████╗░░█████╗░███╗░░░███╗");
-                Console.WriteLine("╚════██║██╔══██╗██╔══██╗████╗░████║");
-                Console.WriteLine("░░███╔═╝██║░░██║██║░░██║██╔████╔██║");
-                Console.WriteLine("██╔══╝░░██║░░██║██║░░██║██║╚██╔╝██║");
-                Console.WriteLine("███████╗╚█████╔╝╚█████╔╝██║░╚═╝░██║");
-                Console.WriteLine("╚══════╝░╚════╝░░╚════╝░╚═╝░░░░░╚═╝");
-                Console.WriteLine("");
-                Console.WriteLine("░█████╗░██╗░░░██╗████████╗░█████╗░░░░░░░░░░░░██╗░█████╗░██╗███╗░░██╗███████╗██████╗░");
-                Console.WriteLine("██╔══██╗██║░░░██║╚══██╔══╝██╔══██╗░░░░░░░░░░░██║██╔══██╗██║████╗░██║██╔════╝██╔══██╗");
-                Console.WriteLine("███████║██║░░░██║░░░██║░░░██║░░██║█████╗░░░░░██║██║░░██║██║██╔██╗██║█████╗░░██████╔╝");
-                Console.WriteLine("██╔══██║██║░░░██║░░░██║░░░██║░░██║╚════╝██╗░░██║██║░░██║██║██║╚████║██╔══╝░░██╔══██╗");
-                Console.WriteLine("██║░░██║╚██████╔╝░░░██║░░░╚█████╔╝░░░░░░╚█████╔╝╚█████╔╝██║██║░╚███║███████╗██║░░██║");
-                Console.WriteLine("╚═╝░░╚═╝░╚═════╝░░░░╚═╝░░░░╚════╝░░░░░░░░╚════╝░░╚════╝░╚═╝╚═╝░░╚══╝╚══════╝╚═╝░░╚═╝");
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine("Made by smashguns#6175");
-                Console.ForegroundColor = ConsoleColor.White;
-                //new Zoom(new string[] { new string[] { "Physics", "12:00:00 AM", "youtube.com" }, new string[] { "English", "12:01:00 AN", "google.com" } });
-
-                var zoom = new Zoom
-                (new string[,]
-                {
-                    { "Physics", "01:02:30 AM", "01:11:30 AM", "google.com"  },
-                    { "English", "12:09:40 AM", "12:19:35 AM", "youtube.com" },
-                    { "Math", "10:00:00 AM", "12:03:00 AM", "foo.com" },
-                });
-                Console.WriteLine("Seems like classess ended");
             }
+            checkForSettings();
+
+
+            Console.WriteLine("Seems like classess ended");
             
-            */
             client.UpdateEndTime();
             client.Dispose();
             Console.WriteLine("Press any key to continue");
