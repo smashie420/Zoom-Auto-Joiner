@@ -402,6 +402,7 @@ namespace Zoom_Auto_Join
         public static string JoinSound { get; set; }
         public static void readSoundData()
         {
+            if (!File.Exists("settings.json")) { return; }
             var json = File.ReadAllText("settings.json");
 
             DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
@@ -454,9 +455,10 @@ namespace Zoom_Auto_Join
                 //});
 
                 unformattedArr[i] = new string[] { className[i], mondayTimes[i], regularTimes[i], classLinks[i] };
-                
+
                 //Console.WriteLine("READSETTINGS()\nClass {0} \nMonday Time {1} \nRegular Time {2} \nClass Link {3}", className[i], mondayTimes[i], regularTimes[i], classLinks[i]);
-                 
+
+                classLinks[i] = classLinks[i].Replace("#success", "");
                 var zoom = new Zoom
                 (new string[,]
                 {
@@ -503,17 +505,14 @@ namespace Zoom_Auto_Join
                 });*/
         }
 
-
-        static void Main(string[] args)
+        public static void playOpenSound()
         {
-            readSoundData();
-            DiscordStatus();
-            initializeText();
-
             if (String.IsNullOrWhiteSpace(openSound))
             {
                 SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
                 if (enableSounds) { audio.Play(); }
+
+
             }
             else
             {
@@ -526,9 +525,19 @@ namespace Zoom_Auto_Join
                 {
                     throwErr("Open Sound Path doesnt exist! Check Path!");
                 }
-                
+
             }
+        }
+
+        static void Main(string[] args)
+        {
+            readSoundData();
+            DiscordStatus();
+            initializeText();
+            playOpenSound();
             checkForSettings();
+            
+            
 
 
             Console.WriteLine("Seems like classess ended");
