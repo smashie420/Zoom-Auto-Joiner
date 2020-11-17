@@ -272,7 +272,7 @@ namespace Zoom_Auto_Join
             }
             catch(Exception ex)
             {
-                throwErr(ex.Message);
+                throwErr("Discord Webhook Error!\n" + ex.Message);
             }
             
         }
