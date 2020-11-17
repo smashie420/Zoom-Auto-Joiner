@@ -337,20 +337,20 @@ namespace Zoom_Auto_Join
 	""Info"": [
 	    {
 		""class"": ""Physics"",
-		""mondayTime"": ""10:30:10 PM"",
-		""regularTime"": ""10:59:30 PM"",
+		""mondayTime"": ""09:10:10 AM"",
+		""regularTime"": ""08:30:30 AM"",
 		""link"": ""google.com""
 	    },
 	    {
 		""class"": ""English"",
-		""mondayTime"": ""09:37:10 PM"",
-		""regularTime"": ""09:59:20 PM"",
+		""mondayTime"": ""10:35:10 AM"",
+		""regularTime"": ""09:55:20 AM"",
 		""link"": ""foo.com""
 	    },
         {
 		""class"": ""Algebra"",
-		""mondayTime"": ""09:37:10 PM"",
-		""regularTime"": ""09:59:20 PM"",
+		""mondayTime"": ""12:00:10 PM"",
+		""regularTime"": ""11:20:20 AM"",
 		""link"": ""foo.com""
 	    },
 	    
