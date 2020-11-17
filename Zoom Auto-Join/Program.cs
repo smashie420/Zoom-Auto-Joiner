@@ -16,7 +16,7 @@ namespace Zoom_Auto_Join
 {
     class Program
     {
-        
+
         public static int getCollums(Array arr)
         {
             int rows = arr.Length / 4;
@@ -77,7 +77,7 @@ namespace Zoom_Auto_Join
             // Constructor that takes one argument:
             public Zoom(string[,] classess)
             {
-                if(getCollums(classess) == 0) { throwErr("Didnt recieve any class data!"); return; }
+                if (getCollums(classess) == 0) { throwErr("Didnt recieve any class data!"); return; }
                 throwSuccess("Waiting for class to start, sit back relax");
                 //Console.WriteLine("Amount of rows = " + getRows(classess));
                 //Console.WriteLine("Amount of Collums = " + getCollums(classess));
@@ -86,7 +86,7 @@ namespace Zoom_Auto_Join
                 string[] mondayTimes = new string[classess.Length / 4];
                 string[] regularTimes = new string[classess.Length / 4];
                 string[] classLinks = new string[classess.Length / 4];
-                
+
                 //for (int rowID = 0; rowID < getRows(classess); rowID++)
                 //{
                 //Console.WriteLine("RowID = " + rowID);
@@ -97,15 +97,17 @@ namespace Zoom_Auto_Join
                     mondayTimes[collumID] = AmpmTo24(Convert.ToDateTime(classess[collumID, 1].ToString()));
                     regularTimes[collumID] = AmpmTo24(Convert.ToDateTime(classess[collumID, 2].ToString()));
                     classLinks[collumID] = classess[collumID, 3].ToString();
+                    Console.WriteLine("{0} {1} {2} {3}",className[collumID], mondayTimes[collumID], regularTimes[collumID], classLinks[collumID] );
 
-                    Console.WriteLine("Waiting to join " + className[collumID]+ "...");
+                    if (DateTime.Now.DayOfWeek == DayOfWeek.Monday) { Console.WriteLine("Waiting to join {0} at {1}", className[collumID], MilitaryToAmPm(Convert.ToDateTime(mondayTimes[collumID]))); }
+                    else { Console.WriteLine("Waiting to join {0} at {1}", className[collumID], MilitaryToAmPm(Convert.ToDateTime(regularTimes[collumID]))); }
                 }
-                
-                
-                
-              
+
+
+
+
                 //}
-                
+
                 /*
                 foreach(string result in mondayTimes)
                 {
@@ -121,36 +123,16 @@ namespace Zoom_Auto_Join
                 */
                 while (true)
                 {
+
                     for (int x = 0; x < mondayTimes.Length; x++)
                     {
-                        for (int y = 0; y < regularTimes.Length; y++)
-                        {
-                            
-                            if (isItClassTime(regularTimes[y]))
-                            {
-                                Console.WriteLine("{0} has started, joinning link {1}", className[y], classLinks[y]);
-                                joinClass(classLinks[y]);
-                                if (String.IsNullOrWhiteSpace(JoinSound))
-                                {
-                                    SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
-                                    if (enableSounds) { audio.Play(); }
-
-                                }
-                                else
-                                {
-                                    SoundPlayer audio = new SoundPlayer(JoinSound);
-                                    if (enableSounds) { audio.Play(); }
-                                }
-                                SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[y]);
-                                break;
-                            }
-                        }
                         if (isItClassTime(mondayTimes[x]))
                         {
-                            if(DateTime.Now.DayOfWeek == DayOfWeek.Monday) { 
-                                Console.WriteLine("Today is monday, using mondays schedule!");
+                            if (DateTime.Now.DayOfWeek == DayOfWeek.Monday)
+                            {
+                                //Console.WriteLine("Today is monday, using mondays schedule!");
                                 // Add a check to see if sounds disabled and if custom sound
-                                if(String.IsNullOrWhiteSpace(JoinSound))
+                                if (String.IsNullOrWhiteSpace(JoinSound))
                                 {
                                     SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
                                     if (enableSounds) { audio.Play(); }
@@ -161,20 +143,46 @@ namespace Zoom_Auto_Join
                                     if (enableSounds) { audio.Play(); }
                                 }
                                 Console.WriteLine("{0} has started, joinning link", className[x]);
-                                joinClass(classLinks[x]);
                                 SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[x]);
+                                joinClass(classLinks[x]);
+                                //Console.Write(" DEBUG: PASS ");
                                 break;
                             }
                         }
+                        //Console.WriteLine(" DEBUG: CHECKING {0} CLASS {1}", mondayTimes[x], className[x]);
                     }
+
+                    for (int y = 0; y < regularTimes.Length; y++)
+                    {
+
+                        if (isItClassTime(regularTimes[y]))
+                        {
+                            Console.WriteLine("{0} has started, joinning link {1}", className[y], classLinks[y]);
+
+                            if (String.IsNullOrWhiteSpace(JoinSound))
+                            {
+                                SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
+                                if (enableSounds) { audio.Play(); }
+
+                            }
+                            else
+                            {
+                                SoundPlayer audio = new SoundPlayer(JoinSound);
+                                if (enableSounds) { audio.Play(); }
+                            }
+                            SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[y]);
+                            joinClass(classLinks[y]);
+                            break;
+                        }
+                    }
+
                     Thread.Sleep(100);
-                    
                 }
             }
 
             public bool isItClassTime(string time)
             {
-                if(DateTime.Now.ToString("HH:mm:ss") == time)
+                if (DateTime.Now.ToString("HH:mm:ss") == time)
                 {
                     return true;
                 }
@@ -186,6 +194,7 @@ namespace Zoom_Auto_Join
                 Process.Start("chrome.exe", link);
                 Console.WriteLine("Joining class link: " + link);
                 Thread.Sleep(5000);
+
             }
 
 
@@ -217,7 +226,7 @@ namespace Zoom_Auto_Join
             int randomTxtArr = rnd.Next(1, imagetextArr.Length);
 
 
-            
+
             client.Initialize();
 
             client.SetPresence(new RichPresence()
@@ -235,7 +244,7 @@ namespace Zoom_Auto_Join
             client.UpdateStartTime();
         }
 
-        
+
         public async static void SendWebHook(string joinTime, string link)
         {
             // Checks if discord web link exists in settings.json if not then dont send webhook
@@ -270,11 +279,11 @@ namespace Zoom_Auto_Join
                     );
                 await client.SendToDiscord(message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throwErr("Discord Webhook Error!\n" + ex.Message);
             }
-            
+
         }
 
         public static string AmpmTo24(DateTime time)
@@ -314,7 +323,7 @@ namespace Zoom_Auto_Join
             public string mondayTime { get; set; }
             public string regularTime { get; set; }
             public string link { get; set; }
-            
+
         }
 
         public static void checkForSettings()
@@ -330,7 +339,7 @@ namespace Zoom_Auto_Join
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\n\n\nsettings.json doesnt exist! Making one now!");
                 Console.ForegroundColor = ConsoleColor.White;
-                
+
                 using (StreamWriter writer = File.CreateText("settings.json"))
                 {
                     writer.WriteLine(@"{
@@ -423,6 +432,9 @@ namespace Zoom_Auto_Join
             }
         }
 
+        public static int timesToLoop = 0;
+
+        public static string[,] classsssesss { get; set; }
         public static void readSettings()
         {
             //var settings = MyIni.Read("class[]", "Classess");
@@ -432,27 +444,27 @@ namespace Zoom_Auto_Join
             
 
             DataTable dataTable = dataSet.Tables["Info"];
-            
+
 
             //Console.WriteLine(dataTable.Rows.Count);
             // 2
 
 
             //string[,] classess = new string[10,4];
-
-            //Array[] unformattedArr = new Array[4];
-            Array[] formattedArr = new Array[4];
+            
+            Array[] unformattedArr = new Array[4];
+            //Array[] formattedArr = new Array[4];
             string[] className = new string[4];
             string[] mondayTimes = new string[4];
             string[] regularTimes = new string[4];
             string[] classLinks = new string[4];
-            int i = 0;
+            
             foreach (DataRow row in dataTable.Rows)
             {
-                className[i] = row["class"].ToString();
-                mondayTimes[i] = row["mondayTime"].ToString();
-                regularTimes[i] = row["regularTime"].ToString();
-                classLinks[i] = row["link"].ToString();
+                className[timesToLoop] = row["class"].ToString();
+                mondayTimes[timesToLoop] = row["mondayTime"].ToString();
+                regularTimes[timesToLoop] = row["regularTime"].ToString();
+                classLinks[timesToLoop] = row["link"].ToString();
 
                 //Console.WriteLine(row["class"] + " - " + row["link"]);
 
@@ -466,14 +478,33 @@ namespace Zoom_Auto_Join
 
                 //Console.WriteLine("READSETTINGS()\nClass {0} \nMonday Time {1} \nRegular Time {2} \nClass Link {3}", className[i], mondayTimes[i], regularTimes[i], classLinks[i]);
 
-                classLinks[i] = classLinks[i].Replace("#success", "");
+                classLinks[timesToLoop] = classLinks[timesToLoop].Replace("#success", "");
+                //Console.WriteLine(" DEBUG: FOR LOOP {0} {1} {2} {2}", className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop]);
+                
+                // FINISH THIS, iTS HARD CODED ADD A FOR LOOP TO DETECT HOW MANY TIMES timesToLoop has passed
+                classsssesss = new string[,] {
+                   
+                   
+                    { className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop] },
+                    
+                    
+                };
+
+                /* WORKING CODE SOMEWHAT
                 var zoom = new Zoom
                 (new string[,]
                 {
-                    { className[i], mondayTimes[i], regularTimes[i], classLinks[i]  },
-                });
-                i++;
+                    { className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop]  },
+                });*/
+                Console.WriteLine("timeToLoop: {0}", timesToLoop);
+                timesToLoop++;
             }
+            foreach(string res in classsssesss)
+            {
+                Console.WriteLine(res);
+            }
+            var zoom = new Zoom(classsssesss);
+            Console.WriteLine("Done");
             
 
             //formattedArr[] = unformattedArr[];
