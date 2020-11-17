@@ -238,17 +238,20 @@ namespace Zoom_Auto_Join
         
         public async static void SendWebHook(string joinTime, string link)
         {
-            
-            var client = new DiscordWebhookClient("https://discordapp.com/api/webhooks/775279806773985292/XqzTnS5Ako0fRdeXkiAa18CgOwtliRCrHGwqNX-O5LYesg4rCak26PsAa7soHSdwaKWe");
+            // Checks if discord web link exists in settings.json if not then dont send webhook
+            if (string.IsNullOrWhiteSpace(discordWebhookLink)) { return; }
+            try
+            {
+                var client = new DiscordWebhookClient(discordWebhookLink);
 
-            // Create your DiscordMessage with all parameters of your message.
-            var message = new DiscordMessage(
-                DateTime.Now.ToString("MMM dd, yyyy HH:mm:ss tt"),
-                username: "Zoom Logs",
-                avatarUrl: "https://www.publiccounsel.net/train/wp-content/uploads/sites/13/5e8ce318664eae0004085461.png",
-                tts: false,
-                embeds: new[]
-                {
+                // Create your DiscordMessage with all parameters of your message.
+                var message = new DiscordMessage(
+                    DateTime.Now.ToString("MMM dd, yyyy HH:mm:ss tt"),
+                    username: "Zoom Logs",
+                    avatarUrl: "https://www.publiccounsel.net/train/wp-content/uploads/sites/13/5e8ce318664eae0004085461.png",
+                    tts: false,
+                    embeds: new[]
+                    {
                     new DiscordMessageEmbed(
                         "Current Logs",
                         color: 0,
@@ -260,12 +263,18 @@ namespace Zoom_Auto_Join
                             new DiscordMessageEmbedField("Joined Time", MilitaryToAmPm(Convert.ToDateTime(joinTime))),
                             new DiscordMessageEmbedField("Link", link)
                         },
-                       
+
                         footer: new DiscordMessageEmbedFooter("Made by smashguns#6175 • " + DateTime.Now, "https://cdn.discordapp.com/avatars/242889488785866752/40ee66d845e1a6341e03c450fcf6d221.png?size=256")
                     )
-                }
-                );
-            await client.SendToDiscord(message);
+                    }
+                    );
+                await client.SendToDiscord(message);
+            }
+            catch(Exception ex)
+            {
+                throwErr(ex.Message);
+            }
+            
         }
 
         public static string AmpmTo24(DateTime time)
@@ -305,6 +314,7 @@ namespace Zoom_Auto_Join
             public string mondayTime { get; set; }
             public string regularTime { get; set; }
             public string link { get; set; }
+            
         }
 
         public static void checkForSettings()
@@ -338,7 +348,7 @@ namespace Zoom_Auto_Join
 		""link"": ""foo.com""
 	    },
         {
-		""class"": ""Class3"",
+		""class"": ""Algebra"",
 		""mondayTime"": ""09:37:10 PM"",
 		""regularTime"": ""09:59:20 PM"",
 		""link"": ""foo.com""
@@ -349,7 +359,8 @@ namespace Zoom_Auto_Join
 	{
 		""Enable Sounds"": ""true"",
 		""Startup Sound Path"": """",
-		""Join Sound Path"": """"
+		""Join Sound Path"": """",
+        ""Discord Webhook Link"": """"
 	}
 	]
 }
@@ -395,6 +406,7 @@ namespace Zoom_Auto_Join
         public static bool enableSounds { get; set; }
         public static string openSound { get; set; }
         public static string JoinSound { get; set; }
+        public static string discordWebhookLink { get; set; }
         public static void readSoundData()
         {
             if (!File.Exists("settings.json")) { return; }
@@ -407,6 +419,7 @@ namespace Zoom_Auto_Join
                 enableSounds = Convert.ToBoolean(row["Enable Sounds"]);
                 openSound = (string)row["Startup Sound Path"];
                 JoinSound = (string)row["Join Sound Path"];
+                discordWebhookLink = (string)row["Discord Webhook Link"];
             }
         }
 
@@ -427,7 +440,7 @@ namespace Zoom_Auto_Join
 
             //string[,] classess = new string[10,4];
 
-            Array[] unformattedArr = new Array[4];
+            //Array[] unformattedArr = new Array[4];
             Array[] formattedArr = new Array[4];
             string[] className = new string[4];
             string[] mondayTimes = new string[4];
@@ -449,7 +462,7 @@ namespace Zoom_Auto_Join
                 //{ row["class"].ToString(), row["mondayTime"].ToString(), row["regularTime"].ToString(), row["link"].ToString()  },
                 //});
 
-                unformattedArr[i] = new string[] { className[i], mondayTimes[i], regularTimes[i], classLinks[i] };
+                //unformattedArr[i] = new string[] { className[i], mondayTimes[i], regularTimes[i], classLinks[i] };
 
                 //Console.WriteLine("READSETTINGS()\nClass {0} \nMonday Time {1} \nRegular Time {2} \nClass Link {3}", className[i], mondayTimes[i], regularTimes[i], classLinks[i]);
 
