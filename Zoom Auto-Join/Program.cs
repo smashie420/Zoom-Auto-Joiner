@@ -134,14 +134,15 @@ namespace Zoom_Auto_Join
                                 {
                                     SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
                                     if (enableSounds) { audio.Play(); }
+
                                 }
                                 else
                                 {
                                     SoundPlayer audio = new SoundPlayer(JoinSound);
                                     if (enableSounds) { audio.Play(); }
                                 }
-
                                 SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[y]);
+                                break;
                             }
                         }
                         if (isItClassTime(mondayTimes[x]))
@@ -159,13 +160,10 @@ namespace Zoom_Auto_Join
                                     SoundPlayer audio = new SoundPlayer(JoinSound);
                                     if (enableSounds) { audio.Play(); }
                                 }
-                                
-                                
-                                
-
-                                Console.WriteLine("{0} has started, joinning link {1}", className[x], classLinks[x]);
+                                Console.WriteLine("{0} has started, joinning link", className[x]);
                                 joinClass(classLinks[x]);
                                 SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[x]);
+                                break;
                             }
                         }
                     }
@@ -210,9 +208,6 @@ namespace Zoom_Auto_Join
 
         // Discord ShiT
         public static readonly DiscordRpcClient client = new DiscordRpcClient("775260345597034526");
-
-       
-
         public static void DiscordStatus()
         {
             Random rnd = new Random();
