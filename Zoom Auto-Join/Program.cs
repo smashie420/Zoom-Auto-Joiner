@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -452,20 +453,27 @@ namespace Zoom_Auto_Join
 
             //string[,] classess = new string[10,4];
             
-            Array[] unformattedArr = new Array[4];
+            string[] unformattedArr = new string[4];
             //Array[] formattedArr = new Array[4];
             string[] className = new string[4];
             string[] mondayTimes = new string[4];
             string[] regularTimes = new string[4];
             string[] classLinks = new string[4];
             
+
+            
             foreach (DataRow row in dataTable.Rows)
             {
                 className[timesToLoop] = row["class"].ToString();
                 mondayTimes[timesToLoop] = row["mondayTime"].ToString();
                 regularTimes[timesToLoop] = row["regularTime"].ToString();
-                classLinks[timesToLoop] = row["link"].ToString();
+                classLinks[timesToLoop] = row["link"].ToString().Replace("#success", "");
+                Console.WriteLine("DEBUG: classNames: {0}",className[4]);
 
+
+                unformattedArr[timesToLoop] = new string[] { className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop] };
+               
+                
                 //Console.WriteLine(row["class"] + " - " + row["link"]);
 
                 //var zoom = new Zoom
@@ -478,18 +486,25 @@ namespace Zoom_Auto_Join
 
                 //Console.WriteLine("READSETTINGS()\nClass {0} \nMonday Time {1} \nRegular Time {2} \nClass Link {3}", className[i], mondayTimes[i], regularTimes[i], classLinks[i]);
 
-                classLinks[timesToLoop] = classLinks[timesToLoop].Replace("#success", "");
-                //Console.WriteLine(" DEBUG: FOR LOOP {0} {1} {2} {2}", className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop]);
-                
-                // FINISH THIS, iTS HARD CODED ADD A FOR LOOP TO DETECT HOW MANY TIMES timesToLoop has passed
-                classsssesss = new string[,] {
-                   
-                   
-                    { className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop] },
-                    
-                    
-                };
 
+                //Console.WriteLine(" DEBUG: FOR LOOP {0} {1} {2} {2}", className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop]);
+
+                classsssesss = new string[,]{
+
+                    { className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop] }
+                    //{  myListOfStrings[0] }
+
+                };
+                
+                // FINISH THIS, iTS HARD CODED ADD A FOR LOOP TO DETECT HOW MANY TIMES timesToLoop has passed 
+                /*
+                classsssesss = new string[,]{
+
+                    { className[0], mondayTimes[0], regularTimes[0], classLinks[0] }
+                    //{  myListOfStrings[1] }
+
+                };*/
+                
                 /* WORKING CODE SOMEWHAT
                 var zoom = new Zoom
                 (new string[,]
@@ -497,13 +512,15 @@ namespace Zoom_Auto_Join
                     { className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop]  },
                 });*/
                 Console.WriteLine("timeToLoop: {0}", timesToLoop);
+     
                 timesToLoop++;
             }
-            foreach(string res in classsssesss)
-            {
-                Console.WriteLine(res);
-            }
-            var zoom = new Zoom(classsssesss);
+            
+           
+
+            //Console.WriteLine(classsssesss[0,0]);
+
+            // var zoom = new Zoom(classsssesss);
             Console.WriteLine("Done");
             
 
