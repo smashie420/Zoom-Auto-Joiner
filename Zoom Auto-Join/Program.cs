@@ -82,6 +82,7 @@ namespace Zoom_Auto_Join
                 throwSuccess("Waiting for class to start, sit back relax");
                 //Console.WriteLine("Amount of rows = " + getRows(classess));
                 //Console.WriteLine("Amount of Collums = " + getCollums(classess));
+               
 
                 string[] className = new string[classess.Length / 4];
                 string[] mondayTimes = new string[classess.Length / 4];
@@ -94,11 +95,12 @@ namespace Zoom_Auto_Join
                 for (int collumID = 0; collumID < getCollums(classess); collumID++)
                 {
                     //Console.WriteLine("CollumID = " + collumID);
+                    
                     className[collumID] = classess[collumID, 0].ToString();
                     mondayTimes[collumID] = AmpmTo24(Convert.ToDateTime(classess[collumID, 1].ToString()));
                     regularTimes[collumID] = AmpmTo24(Convert.ToDateTime(classess[collumID, 2].ToString()));
                     classLinks[collumID] = classess[collumID, 3].ToString();
-                    Console.WriteLine("{0} {1} {2} {3}",className[collumID], mondayTimes[collumID], regularTimes[collumID], classLinks[collumID] );
+                    //Console.WriteLine("{0} {1} {2} {3}",className[collumID], mondayTimes[collumID], regularTimes[collumID], classLinks[collumID] );
 
                     if (DateTime.Now.DayOfWeek == DayOfWeek.Monday) { Console.WriteLine("Waiting to join {0} at {1}", className[collumID], MilitaryToAmPm(Convert.ToDateTime(mondayTimes[collumID]))); }
                     else { Console.WriteLine("Waiting to join {0} at {1}", className[collumID], MilitaryToAmPm(Convert.ToDateTime(regularTimes[collumID]))); }
@@ -436,9 +438,10 @@ namespace Zoom_Auto_Join
         public static int timesToLoop = 0;
 
         public static string[,] classsssesss { get; set; }
-        public static void readSettings()
+        public static int numberOfRowsInJson = 0;
+    public static void readSettings()
         {
-            //var settings = MyIni.Read("class[]", "Classess");
+           
             var json = File.ReadAllText("settings.json");
 
             DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
@@ -446,14 +449,7 @@ namespace Zoom_Auto_Join
 
             DataTable dataTable = dataSet.Tables["Info"];
 
-
-            //Console.WriteLine(dataTable.Rows.Count);
-            // 2
-
-
-            //string[,] classess = new string[10,4];
-            
-            string[] unformattedArr = new string[4];
+            string[][] unformattedArr = new string[3][];
             //Array[] formattedArr = new Array[4];
             string[] className = new string[4];
             string[] mondayTimes = new string[4];
@@ -464,88 +460,24 @@ namespace Zoom_Auto_Join
             
             foreach (DataRow row in dataTable.Rows)
             {
+
                 className[timesToLoop] = row["class"].ToString();
                 mondayTimes[timesToLoop] = row["mondayTime"].ToString();
                 regularTimes[timesToLoop] = row["regularTime"].ToString();
                 classLinks[timesToLoop] = row["link"].ToString().Replace("#success", "");
-                Console.WriteLine("DEBUG: classNames: {0}",className[4]);
-
-
                 unformattedArr[timesToLoop] = new string[] { className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop] };
-               
-                
-                //Console.WriteLine(row["class"] + " - " + row["link"]);
-
-                //var zoom = new Zoom
-                //(new string[,]
-                //{
-                //{ row["class"].ToString(), row["mondayTime"].ToString(), row["regularTime"].ToString(), row["link"].ToString()  },
-                //});
-
-                //unformattedArr[i] = new string[] { className[i], mondayTimes[i], regularTimes[i], classLinks[i] };
-
-                //Console.WriteLine("READSETTINGS()\nClass {0} \nMonday Time {1} \nRegular Time {2} \nClass Link {3}", className[i], mondayTimes[i], regularTimes[i], classLinks[i]);
-
-
-                //Console.WriteLine(" DEBUG: FOR LOOP {0} {1} {2} {2}", className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop]);
-
-                classsssesss = new string[,]{
-
-                    { className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop] }
-                    //{  myListOfStrings[0] }
-
-                };
-                
-                // FINISH THIS, iTS HARD CODED ADD A FOR LOOP TO DETECT HOW MANY TIMES timesToLoop has passed 
-                /*
-                classsssesss = new string[,]{
-
-                    { className[0], mondayTimes[0], regularTimes[0], classLinks[0] }
-                    //{  myListOfStrings[1] }
-
-                };*/
-                
-                /* WORKING CODE SOMEWHAT
-                var zoom = new Zoom
-                (new string[,]
-                {
-                    { className[timesToLoop], mondayTimes[timesToLoop], regularTimes[timesToLoop], classLinks[timesToLoop]  },
-                });*/
-                Console.WriteLine("timeToLoop: {0}", timesToLoop);
-     
                 timesToLoop++;
             }
-            
-           
 
-            //Console.WriteLine(classsssesss[0,0]);
-
-            // var zoom = new Zoom(classsssesss);
+            var zoom = new Zoom
+                (new string[,]
+                {
+                    { unformattedArr[0][0], unformattedArr[0][1],  unformattedArr[0][2],  unformattedArr[0][3]},
+                    { unformattedArr[1][0], unformattedArr[1][1],  unformattedArr[1][2],  unformattedArr[1][3]},
+                    { unformattedArr[2][0], unformattedArr[2][1],  unformattedArr[2][2],  unformattedArr[2][3]},
+                });
+  
             Console.WriteLine("Done");
-            
-
-            //formattedArr[] = unformattedArr[];
-            /*
-
-
-            Console.WriteLine(unformattedArr.Length);
-            for(int a = 0; a < unformattedArr.Length; a++)
-            {
-                Console.WriteLine(unformattedArr[a]);
-            }
-            
-
-            string[,] classess = new string[3, 4];
-            int fora = 0;
-            //int forb = 0;
-            
-            foreach (string[] text in unformattedArr)
-            {
-                if (text == null) { break; }
-                //Console.WriteLine("FOR A = " + fora);
-                Console.WriteLine("TEST" +text[0]); // Returns info to Get
-                fora++;
-            }*/
 
             /*
             Info to get =               0               1               2               3   
@@ -553,12 +485,7 @@ namespace Zoom_Auto_Join
             classess[1,infotoget] ={    "English",    "12:09:40 AM",  "12:19:35 AM",  "youtube.com" },
             classess[2,infotoget] = {   "Math",       "10:00:00 AM",  "12:03:00 AM",  "foo.com" },
             */
-            /*
-            var zoom = new Zoom
-                (new string[,]
-                {
-                    { row["class"].ToString(), row["mondayTime"].ToString(), row["regularTime"].ToString(), row["link"].ToString()  },
-                });*/
+
         }
 
         public static void playOpenSound()
