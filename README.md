@@ -21,11 +21,11 @@
 - Change settings to your desire
 
 # Time examples
-The times are formatted like this HH:MM:SS AM/PM
+The times are formatted like this HH:MM:SS AM/PM<br>
 "regularTime": "HH:MM:SS AM/PM",
 
-Lets say your class starts at 9:50 AM
+Lets say your class starts at 9:50 AM<br>
 "regularTime": "09:50:00 AM",
 
-Lets say your class starts at 2:00 PM
+Lets say your class starts at 2:00 PM<br>
 "regularTime": "02:00:00 PM",
