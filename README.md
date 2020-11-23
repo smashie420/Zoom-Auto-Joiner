@@ -19,3 +19,13 @@
 - Open `settings.json` with your favorite text editor
 ![Open settings.json](https://i.imgur.com/VPB7vNa.png)
 - Change settings to your desire
+
+# Time examples
+The times are formatted like this HH:MM:SS AM/PM
+"regularTime": "HH:MM:SS AM/PM",
+
+Lets say your class starts at 9:50 AM
+"regularTime": "09:50:00 AM",
+
+Lets say your class starts at 2:00 PM
+"regularTime": "02:00:00 PM",
