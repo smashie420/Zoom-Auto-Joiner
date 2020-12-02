@@ -126,56 +126,60 @@ namespace Zoom_Auto_Join
                 */
                 while (true)
                 {
-
-                    for (int x = 0; x < mondayTimes.Length; x++)
+                    if (DateTime.Now.DayOfWeek == DayOfWeek.Monday)
                     {
-                        if (isItClassTime(mondayTimes[x]))
+                        for (int x = 0; x < mondayTimes.Length; x++)
                         {
-                            if (DateTime.Now.DayOfWeek == DayOfWeek.Monday)
+                            if (isItClassTime(mondayTimes[x]))
                             {
-                                //Console.WriteLine("Today is monday, using mondays schedule!");
-                                // Add a check to see if sounds disabled and if custom sound
+                                if (DateTime.Now.DayOfWeek == DayOfWeek.Monday)
+                                {
+                                    //Console.WriteLine("Today is monday, using mondays schedule!");
+                                    // Add a check to see if sounds disabled and if custom sound
+                                    if (String.IsNullOrWhiteSpace(JoinSound))
+                                    {
+                                        SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
+                                        if (enableSounds) { audio.Play(); }
+                                    }
+                                    else
+                                    {
+                                        SoundPlayer audio = new SoundPlayer(JoinSound);
+                                        if (enableSounds) { audio.Play(); }
+                                    }
+                                    Console.WriteLine("{0} has started, joinning link", className[x]);
+                                    SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[x]);
+                                    joinClass(classLinks[x]);
+                                    //Console.Write(" DEBUG: PASS ");
+                                    break;
+                                }
+                            }
+                            //Console.WriteLine(" DEBUG: CHECKING {0} CLASS {1}", mondayTimes[x], className[x]);
+                        }
+                    }
+                    else
+                    {
+                        for (int y = 0; y < regularTimes.Length; y++)
+                        {
+
+                            if (isItClassTime(regularTimes[y]))
+                            {
+                                Console.WriteLine("{0} has started, joinning link {1}", className[y], classLinks[y]);
+
                                 if (String.IsNullOrWhiteSpace(JoinSound))
                                 {
                                     SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
                                     if (enableSounds) { audio.Play(); }
+
                                 }
                                 else
                                 {
                                     SoundPlayer audio = new SoundPlayer(JoinSound);
                                     if (enableSounds) { audio.Play(); }
                                 }
-                                Console.WriteLine("{0} has started, joinning link", className[x]);
-                                SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[x]);
-                                joinClass(classLinks[x]);
-                                //Console.Write(" DEBUG: PASS ");
+                                SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[y]);
+                                joinClass(classLinks[y]);
                                 break;
                             }
-                        }
-                        //Console.WriteLine(" DEBUG: CHECKING {0} CLASS {1}", mondayTimes[x], className[x]);
-                    }
-
-                    for (int y = 0; y < regularTimes.Length; y++)
-                    {
-
-                        if (isItClassTime(regularTimes[y]))
-                        {
-                            Console.WriteLine("{0} has started, joinning link {1}", className[y], classLinks[y]);
-
-                            if (String.IsNullOrWhiteSpace(JoinSound))
-                            {
-                                SoundPlayer audio = new SoundPlayer(Zoom_Auto_Join.Properties.Resources.intro);
-                                if (enableSounds) { audio.Play(); }
-
-                            }
-                            else
-                            {
-                                SoundPlayer audio = new SoundPlayer(JoinSound);
-                                if (enableSounds) { audio.Play(); }
-                            }
-                            SendWebHook(DateTime.Now.ToString("HH:mm:ss tt"), classLinks[y]);
-                            joinClass(classLinks[y]);
-                            break;
                         }
                     }
 
@@ -195,9 +199,7 @@ namespace Zoom_Auto_Join
             public void joinClass(string link)
             {
                 Process.Start("chrome.exe", link);
-                Console.WriteLine("Joining class link: " + link);
                 Thread.Sleep(5000);
-
             }
 
 
