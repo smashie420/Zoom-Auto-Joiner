@@ -6,13 +6,14 @@
   <p style="text-align: center;">
     <h2>A program that runs in the background that automaticlly joins said zoom link</h2>
   </p>
-  
-  <p style="display:flex; justify-content: space-around; flex-direction:collum">
+</div>
+<div style="display:flex; justify-content: space-around; flex-direction:collum"> 
+  <p>
     <img src="https://i.imgur.com/gLfQPqk.png" title="Example">
     <img src="https://i.imgur.com/u4N2Im2.png" title="Example">
   </p>
-  
-</div>
+ </div>
+
   
 
 # Requirements
