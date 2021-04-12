@@ -10,8 +10,10 @@
     
   </p>
   <p style="text-align: center;">
+    <h1 style='color:red;'>THIS IS DEPCRECATED</h2>
+    <h2 style="color:red;">USE NEWER VERSION</h2>
     <h2>A program that runs in the background that automaticlly joins said zoom link</h2>
-    <h2 style='color:red;'>THIS IS DEPCRECATED \nUSE NEWER VERSION</h2>
+    
   </p>
 </div>
 <div style="display:flex; justify-content: space-around; flex-direction:collum"> 
