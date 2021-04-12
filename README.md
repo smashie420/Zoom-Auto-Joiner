@@ -11,6 +11,7 @@
   </p>
   <p style="text-align: center;">
     <h2>A program that runs in the background that automaticlly joins said zoom link</h2>
+    <h2 style='color:red;'>THIS IS DEPCRECATED USE NEWER VERSION</h2>
   </p>
 </div>
 <div style="display:flex; justify-content: space-around; flex-direction:collum"> 
