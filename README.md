@@ -11,7 +11,7 @@
   </p>
   <p style="text-align: center;">
     <h1 style='color:red;'>THIS IS DEPCRECATED</h2>
-    <h2 style="color:red;">USE NEWER VERSION</h2>
+    <h2 style="color:red;"><a href="https://github.com/smashie420/Zoom-Joiner">USE NEWER VERSION</a></h2>
     <h2>A program that runs in the background that automaticlly joins said zoom link</h2>
     
   </p>
